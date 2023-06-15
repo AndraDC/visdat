@@ -65,7 +65,7 @@ st.bokeh_chart(plot, use_container_width=True)
 
 def update_plot():
     # set the `yr` name to `slider.value` and `source.data = new_data`
-    yr = slider.value
+    yr = slider.Year
     x = x_select.value
     y = y_select.value
     # Label axes of plot
