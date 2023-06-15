@@ -63,5 +63,22 @@ plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
 plot.legend.location = 'bottom_left'
 st.bokeh_chart(plot, use_container_width=True)
 
-slider = st.slider('year', 1970, 2010, (1970,2010))
+def update_plot(attr, old, new):
+    # set the `yr` name to `slider.value` and `source.data = new_data`
+    yr = slider.value
+    x = x_select.value
+    y = y_select.value
+    # Label axes of plot
+    plot.xaxis.axis_label = x
+    plot.yaxis.axis_label = y
+    # new data
+    new_data = {
+    'x'       : data.loc[yr][x],
+    'y'       : data.loc[yr][y],
+    'country' : data.loc[yr].Country,
+    'pop'     : (data.loc[yr].population / 20000000) + 2,
+    'region'  : data.loc[yr].region,
+    }
+    source.data = new_data
 
+slider = st.slider('year', 1970, 2010, (1970,2010))
