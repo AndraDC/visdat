@@ -65,7 +65,7 @@ st.bokeh_chart(plot, use_container_width=True)
 
 def update_plot():
     # set the `yr` name to `slider.value` and `source.data = new_data`
-    yr = slider.Year
+    yr = slider.value
     x = x_select.value
     y = y_select.value
     # Label axes of plot
@@ -85,5 +85,5 @@ def update_plot():
     plot.title.text = 'Gapminder data for %d' % yr
 
 # Make a slider object: slider
-slider = st.slider('year',min_value=1970, max_value=2010, value=1970, step=1, on_change=update_plot)
+slider = st.slider('year',min_value=1970, max_value=2010, value=1970, step=1)
 
