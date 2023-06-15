@@ -80,5 +80,13 @@ def update_plot(attr, old, new):
     'region'  : data.loc[yr].region,
     }
     source.data = new_data
+    
+    # Add title to figure: plot.title.text
+    plot.title.text = 'Gapminder data for %d' % yr
 
-slider = st.slider('year', 1970, 2010, (1970,2010), on_change=update_plot)
+# Make a slider object: slider
+slider = Slider(start=1970, end=2010, step=1, value=1970, title='Year')
+slider.on_change('value',update_plot)
+
+# Tampilkan slider menggunakan Streamlit
+st.bokeh_chart(slider)
