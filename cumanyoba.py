@@ -81,4 +81,4 @@ def update_plot(attr, old, new):
     }
     source.data = new_data
 
-slider = st.slider('year', 1970, 2010, (1970,2010))
+slider = st.slider('year', 1970, 2010, (1970,2010), on_change=update_plot)
