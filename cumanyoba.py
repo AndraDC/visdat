@@ -90,7 +90,7 @@ slider.on_change('value',update_plot)
 
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
-x_select = st.select(
+x_select = Select(
     options=['fertility', 'life', 'child_mortality', 'gdp'],
     value='fertility',
     title='x-axis data'
