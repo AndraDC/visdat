@@ -85,5 +85,5 @@ def update_plot():
     plot.title.text = 'Gapminder data for %d' % yr
 
 # Make a slider object: slider
-slider = st.slider('year', 1970, 2010, (1970,2010), on_change=update_plot)
+slider = st.slider('year',min_value=1970, max_value=1970, value=1970, step=1, on_change=update_plot)
 
