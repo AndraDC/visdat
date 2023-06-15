@@ -86,7 +86,7 @@ def update_plot(attr, old, new):
 
 # Make a slider object: slider
 slider = st.slider('Year', 1970, 2010, 1970)
-slider.on_change('value',update_plot)
+slider.on_change(1970,update_plot)
 
 # Make dropdown menu for x and y axis
 # Create a dropdown Select widget for the x data: x_select
