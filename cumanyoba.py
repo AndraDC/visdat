@@ -63,7 +63,7 @@ plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
 plot.legend.location = 'bottom_left'
 st.bokeh_chart(plot, use_container_width=True)
 
-def update_plot(attr, old, new):
+def update_plot:
     # set the `yr` name to `slider.value` and `source.data = new_data`
     yr = slider.value
     x = x_select.value
@@ -85,8 +85,5 @@ def update_plot(attr, old, new):
     plot.title.text = 'Gapminder data for %d' % yr
 
 # Make a slider object: slider
-slider = Slider(start=1970, end=2010, step=1, value=1970, title='Year')
-slider.on_change('value',update_plot)
+slider = st.slider('year', 1970, 2010, (1970,2010), on_change=update_plot)
 
-# Tampilkan slider menggunakan Streamlit
-st.bokeh_chart(slider)
