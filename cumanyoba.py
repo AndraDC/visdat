@@ -62,65 +62,6 @@ plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
 # Set the legend and axis attributes
 plot.legend.location = 'bottom_left'
 st.bokeh_chart(plot, use_container_width=True)
-# Define the callback function: update_plot
-def update_plot(attr, old, new):
-    # set the `yr` name to `slider.value` and `source.data = new_data`
-    yr = slider.value
-    x = x_select.value
-    y = y_select.value
-    # Label axes of plot
-    plot.xaxis.axis_label = x
-    plot.yaxis.axis_label = y
-    # new data
-    new_data = {
-    'x'       : data.loc[yr][x],
-    'y'       : data.loc[yr][y],
-    'country' : data.loc[yr].Country,
-    'pop'     : (data.loc[yr].population / 20000000) + 2,
-    'region'  : data.loc[yr].region,
-    }
-    source.data = new_data
-    
-    # Add title to figure: plot.title.text
-    plot.title.text = 'Gapminder data for %d' % yr
-
-# Make a slider object: slider
-slider = st.slider('Year', 1970, 2010, 1970)
-#slider.on_change('value',update_plot)
-
-# Make dropdown menu for x and y axis
-# Create a dropdown Select widget for the x data: x_select
-x_select = Select(
-    options=['fertility', 'life', 'child_mortality', 'gdp'],
-    value='fertility',
-    title='x-axis data'
-)
-# Attach the update_plot callback to the 'value' property of x_select
-x_select.on_change('value', update_plot)
-
-# Create a dropdown Select widget for the y data: y_select
-y_select = Select(
-    options=['fertility', 'life', 'child_mortality', 'gdp'],
-    value='life',
-    title='y-axis data'
-)
-# Attach the update_plot callback to the 'value' property of y_select
-y_select.on_change('value', update_plot)
-    
-# Create layout and add to current document
-layout = row(widgetbox(slider, x_select, y_select), plot)
-curdoc().add_root(layout)
-
-
-# In[5]:
-
-
-# bokeh serve --show myapp.py
-
-
-# For more on all things interaction in Bokeh, [**Adding Interactions**](https://docs.bokeh.org/en/latest/docs/user_guide/interaction.html) in the Bokeh User Guide is a great place to start.
-
-# In[ ]:
 
 
 
