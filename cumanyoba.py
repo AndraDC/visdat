@@ -63,7 +63,7 @@ plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
 plot.legend.location = 'bottom_left'
 st.bokeh_chart(plot, use_container_width=True)
 
-def update_plot:
+def update_plot():
     # set the `yr` name to `slider.value` and `source.data = new_data`
     yr = slider.value
     x = x_select.value
