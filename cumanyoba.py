@@ -63,6 +63,5 @@ plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
 plot.legend.location = 'bottom_left'
 st.bokeh_chart(plot, use_container_width=True)
 
-
-
+slider = st.slider('year', 1970, 2010, 1970)
 
