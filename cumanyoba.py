@@ -85,9 +85,7 @@ def update_plot(attr, old, new):
     plot.title.text = 'Gapminder data for %d' % yr
 
 # Make a slider object: slider
-slider = st.slider('Year', 1970, 2010, (1970,2010), 
-                   start_year = slider[0],
-                   end_year = slider[1])
+slider = st.slider('Year', 1970, 2010, 1970)
 #slider.on_change('value',update_plot)
 
 # Make dropdown menu for x and y axis
