@@ -1,89 +1,91 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# # <center>Interactive Data Visualization in Python With Bokeh</center>
-
-# ## Adding Interaction
-
-# In[1]:
-
 import streamlit as st
 import pandas as pd
-from bokeh.io import curdoc
-from bokeh.plotting import figure
-from bokeh.models import HoverTool, ColumnDataSource
-from bokeh.models import CategoricalColorMapper
-from bokeh.palettes import Spectral6
-from bokeh.layouts import widgetbox, row, gridplot
-from bokeh.models import Slider, Select
+import matplotlib.pyplot as plt
 
+#st.set_page_config(page_title=None, page_icon=None, layout="wide")
 
-# In[2]:
+# function to make any grid
 
+def make_grid(cols,rows):
+    grid = [0]*cols
+    for i in range(cols):
+        with st.container():
+            grid[i] = st.columns(rows)
+    return grid
 
-data = pd.read_csv("gapminder_tidy.csv")
-data.set_index('Year', inplace=True)
+# Main layout begins here
 
+st.title("""
+Three key findings from the 2022 UN Population Prospects
+""")
 
-# In[3]:
+st.write("""
+The UN releases an update of its World Population Prospects every two years. 
+Its latest release was delayed due to the COVID-19 pandemic and was released in 2022.
+""")
 
+st.markdown("---")
+        
+# Make the grid
+mygrid = make_grid(3,(2,4,4))
 
-# Make a list of the unique values from the region column: regions_list
-regions_list = data.region.unique().tolist()
+# Row 0
+popgrowth = pd.read_csv('data/population-growth.csv')
+worldgrowth = popgrowth[popgrowth['Country name'] == 'World']
 
-# Make a color mapper: color_mapper
-color_mapper = CategoricalColorMapper(factors=regions_list, palette=Spectral6)
+fig, ax = plt.subplots()
+worldgrowth.plot(x='Year', y='Population growth rate', ax=ax)
 
+mygrid[0][0].markdown("""
+#### World population could be 8 billion by end of 2022
+""")
 
-# In[4]:
+mygrid[0][1].write("""
+Since 1975 the world has been growing by billion people every 12 years. 
+It passed 7 billion in 2011 and, by the end of 2022, 
+there will be 8 billion people in the world. 
+But, the growth rate is below 1%, less than half its peak rate of growth - of 2.3% - in the 1960s.
+""")
 
+mygrid[0][2].pyplot(fig)
 
-# Make the ColumnDataSource: source
-source = ColumnDataSource(data={
-    'x'       : data.loc[1970].fertility,
-    'y'       : data.loc[1970].life,
-    'country' : data.loc[1970].Country,
-    'pop'     : (data.loc[1970].population / 20000000) + 2,
-    'region'  : data.loc[1970].region,
-})
+# Row 1
+popdf = pd.read_csv('data/population.csv')
+worldpop = popdf[popdf['Country name'] == 'World']
 
+fig, ax = plt.subplots()
+worldpop.plot(x='Year',y='Population', ax=ax)
 
-# In[ ]:
+mygrid[1][0].markdown("""
+#### World population will peak at 10.4 billion in 2086
+""")
 
+mygrid[1][1].write("""
+The world population has increased rapidly over the last century.
+The UN projects that the global population will peak before the end of the century,
+ in 2086, at just over 10.4 billion people.
+""")
 
-# Create the figure: plot
-plot = figure(title='1970', x_axis_label='Fertility (children per woman)', y_axis_label='Life Expectancy (years)',
-           plot_height=400, plot_width=700, tools=[HoverTool(tooltips='@country')])
+mygrid[1][2].pyplot(fig)
 
-# Add a circle glyph to the figure p
-plot.circle(x='x', y='y', source=source, fill_alpha=0.8,
-           color=dict(field='region', transform=color_mapper), legend='region')
+# Row 2
+fig, ax = plt.subplots()
+ax = popdf[popdf['Country name'] == 'India'].plot(x = 'Year',y = 'Population', label = 'India', ax=ax)
+popdf[popdf['Country name'] == 'China'].plot(x = 'Year', label = "China", y='Population', ax = ax)
 
-# Set the legend and axis attributes
-plot.legend.location = 'bottom_left'
-st.bokeh_chart(plot, use_container_width=True)
+mygrid[2][0].markdown("""
+#### In 2023 India will overtake China as the world's most populous country
+""")
+mygrid[2][1].write("""
+China is the world's most populous with more than 1.4 billion people. 
+Now, its growth rate has fallen due to a rapid drop in fertility rate 
+over the 1970s and 80s.
+In India, the rate of decline has been slower, so it is expected to overtake China in 2023.
+""")
+mygrid[2][2].pyplot(fig)
 
-def update_plot():
-    # set the `yr` name to `slider.value` and `source.data = new_data`
-    yr = slider.value
-    x = x_select.value
-    y = y_select.value
-    # Label axes of plot
-    plot.xaxis.axis_label = x
-    plot.yaxis.axis_label = y
-    # new data
-    new_data = {
-    'x'       : data.loc[yr][x],
-    'y'       : data.loc[yr][y],
-    'country' : data.loc[yr].Country,
-    'pop'     : (data.loc[yr].population / 20000000) + 2,
-    'region'  : data.loc[yr].region,
-    }
-    source.data = new_data
-    
-    # Add title to figure: plot.title.text
-    plot.title.text = 'Gapminder data for %d' % yr
-
-# Make a slider object: slider
-slider = st.slider('year',1970, 2010, 1970, 1, on_change=update_plot)
-
+# Footer
+st.markdown("---")
+st.markdown("""_Data and text courtesy of, 
+[Our World in Data](https://ourworldindata.org/world-population-update-2022)_,
+ [CC BY 4](https://creativecommons.org/licenses/by/4.0/)""")
